@@ -1,0 +1,231 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "启动 rag-agent",
+      "detail": "独立启动 · http://127.0.0.1:8001 （勿用 uv run）",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn rag_agent.main:app --host 127.0.0.1 --port 8001 --reload --reload-dir src",
+      "options": {
+        "cwd": "${workspaceFolder}/rag-agent",
+        "env": {
+          "VIRTUAL_ENV": "",
+          "PYTHONPATH": "src",
+          "EMBEDDING_PROVIDER": "local",
+          "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+          "EMBEDDING_DIMS": "512",
+          "HF_ENDPOINT": "https://hf-mirror.com",
+          "API_PORT": "8001"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "rag-agent",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Application startup complete|Uvicorn running"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "agents",
+        "clear": true
+      }
+    },
+    {
+      "label": "启动 cs-agent",
+      "detail": "独立启动 · http://127.0.0.1:8002 （勿用 uv run）",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn cs_agent.main:app --host 127.0.0.1 --port 8002 --reload --reload-dir src",
+      "options": {
+        "cwd": "${workspaceFolder}/cs-agent",
+        "env": {
+          "VIRTUAL_ENV": "",
+          "PYTHONPATH": "src",
+          "EMBEDDING_PROVIDER": "local",
+          "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+          "EMBEDDING_DIMS": "512",
+          "HF_ENDPOINT": "https://hf-mirror.com",
+          "API_PORT": "8002"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "cs-agent",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Application startup complete|Uvicorn running"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "agents",
+        "clear": true
+      }
+    },
+    {
+      "label": "启动 finance-agent",
+      "detail": "独立启动 · http://127.0.0.1:8003 （勿用 uv run）",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn finance_agent.main:app --host 127.0.0.1 --port 8003 --reload --reload-dir src",
+      "options": {
+        "cwd": "${workspaceFolder}/finance-agent",
+        "env": {
+          "VIRTUAL_ENV": "",
+          "PYTHONPATH": "src",
+          "EMBEDDING_PROVIDER": "local",
+          "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+          "EMBEDDING_DIMS": "512",
+          "HF_ENDPOINT": "https://hf-mirror.com",
+          "API_PORT": "8003"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "finance-agent",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Application startup complete|Uvicorn running"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "agents",
+        "clear": true
+      }
+    },
+    {
+      "label": "启动 spine-agent",
+      "detail": "独立启动 · http://127.0.0.1:8004 （无需 Docker，勿用 uv run）",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn spine_agent.main:app --host 127.0.0.1 --port 8004 --reload --reload-dir src",
+      "options": {
+        "cwd": "${workspaceFolder}/spine-agent",
+        "env": {
+          "VIRTUAL_ENV": "",
+          "PYTHONPATH": "src",
+          "API_PORT": "8004"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "spine-agent",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Application startup complete|Uvicorn running"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "agents",
+        "clear": true
+      }
+    },
+    {
+      "label": "停止所有 Agent 服务",
+      "detail": "结束 8001/8002/8003/8004 上的 uvicorn 及相关 MCP 进程",
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}/scripts/stop-all-agents.ps1\"",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "停止 rag-agent",
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}/scripts/stop-agent-port.ps1\" -Port 8001 -Name rag-agent",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "停止 cs-agent",
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}/scripts/stop-agent-port.ps1\" -Port 8002 -Name cs-agent",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "停止 finance-agent",
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}/scripts/stop-agent-port.ps1\" -Port 8003 -Name finance-agent",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "停止 spine-agent",
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}/scripts/stop-agent-port.ps1\" -Port 8004 -Name spine-agent",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "打包项目到 zip（不含 .venv）",
+      "detail": "把整个仓库打进 zip，跳过所有 .venv。运行时填写 zip 路径。",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/copy-project.ps1",
+        "-Destination",
+        "${input:copyDestination}"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "启动全部 Agent（并行）",
+      "detail": "并行启动 rag / cs / finance / spine 四个独立服务",
+      "dependsOrder": "parallel",
+      "dependsOn": ["启动 rag-agent", "启动 cs-agent", "启动 finance-agent", "启动 spine-agent"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "copyDestination",
+      "type": "promptString",
+      "description": "zip 路径。不要放在当前项目里面。",
+      "default": "D:\\backup\\Agent1.zip"
+    }
+  ]
+}

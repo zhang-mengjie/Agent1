@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# cs-agent 基础设施（与 rag-agent / finance-agent 端口隔离）
+#
+# 【目的】三个 Agent 可同时跑在一台机器上，互不抢端口、互不串库。
+# 【易错点】
+# 1. 宿主机端口是 5433 / 6380（左边），容器内仍是 5432 / 6379（右边）。
+#    .env 里写的是「宿主机端口」。
+# 2. container_name / volume 名必须唯一，否则 docker compose 会冲突。
+# 3. 启动后用 docker compose ps 看 healthy，再起 uvicorn。
+# ---------------------------------------------------------------------------
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: cs-agent-postgres
+    environment:
+      POSTGRES_USER: cs
+      POSTGRES_PASSWORD: cs
+      POSTGRES_DB: cs_agent
+    ports:
+      # 宿主机 5433 → 容器 5432
+      - "5433:5432"
+    volumes:
+      - cs_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cs -d cs_agent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: cs-agent-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - cs_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  cs_pg_data:
+  cs_redis_data:

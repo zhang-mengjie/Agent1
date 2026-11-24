@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>spine-agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="app">
+    <header class="hero">
+      <div>
+        <p class="brand">spine-agent</p>
+        <h1>Spine 制作台</h1>
+        <p class="lead">先生成一张整图。满意后，再让 AI 看着这张图拆成部件，最后按动画描述写出 Spine 4.1 并播放。</p>
+      </div>
+      <div class="status-row">
+        <span class="pill" id="pillHealth">探活中…</span>
+        <span class="pill" id="pillStage">尚未开始</span>
+        <button type="button" class="btn ghost" id="demoBtn">生成内置橙猫示例</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="steps">
+        <form class="block" id="textureForm">
+          <p class="step-no">01</p>
+          <h2>生成整图</h2>
+          <label>
+            内容描述
+            <textarea id="texturePrompt" rows="4" placeholder="一只站立的橙色小猫，圆脸，蓝色围巾，短手臂，长尾巴"></textarea>
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn primary">生成整图</button>
+            <p class="hint" data-hint></p>
+          </div>
+        </form>
+
+        <form class="block" id="splitForm">
+          <p class="step-no">02</p>
+          <h2>拆解部件</h2>
+          <label>
+            拆解说明
+            <textarea id="splitPrompt" rows="4" placeholder="按图拆开：头、两只耳朵、身体、蓝色围巾、双手、双腿、尾巴。关节处留一点重叠。"></textarea>
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn primary">AI 拆成碎图</button>
+            <p class="hint" data-hint></p>
+          </div>
+        </form>
+
+        <form class="block" id="animateForm">
+          <p class="step-no">03</p>
+          <h2>生成动画</h2>
+          <label>
+            动画描述
+            <textarea id="animatePrompt" rows="4" placeholder="待机时身体轻轻起伏，头小幅点动，尾巴左右摆。另外做一个挥手：右臂抬起再放下。"></textarea>
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn primary">生成 Spine 并预览</button>
+            <p class="hint" data-hint></p>
+          </div>
+        </form>
+      </aside>
+
+      <main class="stage">
+        <div class="stage-bar">
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab active" data-tab="sheet">贴图</button>
+            <button type="button" class="tab" data-tab="pieces">碎图</button>
+            <button type="button" class="tab" data-tab="preview">Spine 预览</button>
+          </div>
+          <div class="downloads" id="downloads"></div>
+        </div>
+        <p class="warn" id="warnings" hidden></p>
+
+        <section class="panel active" id="panel-sheet">
+          <div class="sheet-grid">
+            <figure>
+              <figcaption id="textureCaption">整图</figcaption>
+              <div class="frame checker" id="textureFrame"><p class="empty">完成第 1 步后显示整图</p></div>
+            </figure>
+            <figure>
+              <figcaption id="assembledCaption">确认这张整图，满意后再拆</figcaption>
+              <div class="frame checker" id="assembledFrame"><p class="empty">完成第 1 步后显示整图</p></div>
+            </figure>
+          </div>
+          <ul class="part-list" id="partList"></ul>
+        </section>
+
+        <section class="panel" id="panel-pieces">
+          <div class="piece-grid" id="pieceGrid"><p class="empty">完成第 2 步后，这里是按骨骼裁开的碎图。</p></div>
+          <ol class="bone-list" id="boneList"></ol>
+        </section>
+
+        <section class="panel" id="panel-preview">
+          <div class="preview-shell">
+            <canvas id="stageCanvas" width="480" height="560"></canvas>
+            <div class="preview-tools">
+              <label>
+                动画
+                <select id="animSelect"></select>
+              </label>
+              <button type="button" class="btn ghost" id="playBtn">暂停</button>
+              <label class="check"><input type="checkbox" id="showBones" /> 显示骨骼</label>
+              <div class="playbar" aria-hidden="true"><span id="playhead"></span></div>
+            </div>
+          </div>
+          <p class="hint">预览按 Spine 运行时的骨骼公式播放导出的 JSON。下载的 character.json 与 character.atlas 可用 Spine 4.1 打开。</p>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

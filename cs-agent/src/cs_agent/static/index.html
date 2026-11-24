@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>cs-agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;560;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="app">
+    <header class="hero">
+      <p class="brand">cs-agent</p>
+      <h1>企业客服工作台</h1>
+      <p class="lead">维护 FAQ 知识库，接待客户咨询；支持意图识别与转人工建议。</p>
+      <div class="status-row" id="statusRow">
+        <span class="pill" id="pillHealth">探活中…</span>
+        <span class="pill" id="pillKb">知识库 —</span>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="kb" type="button">FAQ 知识库</button>
+      <button class="tab" data-tab="chat" type="button">客服对话</button>
+    </nav>
+
+    <section class="panel active" id="panel-kb">
+      <div class="split">
+        <div class="stack">
+          <form id="ingestForm" class="block">
+            <h2>提交文本</h2>
+            <label>
+              来源标签
+              <input id="source" name="source" value="manual" maxlength="64" />
+            </label>
+            <label>
+              文本内容
+              <textarea id="texts" name="texts" rows="8" placeholder="粘贴要入库的文本。多段可用空行分隔。"></textarea>
+            </label>
+            <button type="submit" class="btn primary">切分并向量化入库</button>
+            <p class="hint" id="ingestHint"></p>
+          </form>
+
+          <form id="pdfForm" class="block">
+            <h2>上传 PDF</h2>
+            <label>
+              来源标签（可选，默认用文件名）
+              <input id="pdfSource" name="pdfSource" placeholder="如：hr-handbook" maxlength="64" />
+            </label>
+            <label>
+              PDF 文件
+              <input id="pdfFile" name="pdfFile" type="file" accept="application/pdf,.pdf" />
+            </label>
+            <button type="submit" class="btn primary">解析 PDF 并入库</button>
+            <p class="hint" id="pdfHint">仅支持可复制文本的 PDF；扫描件需先 OCR。</p>
+          </form>
+        </div>
+
+        <div class="block">
+          <div class="block-head">
+            <h2>向量化状态</h2>
+            <button type="button" class="btn ghost" id="refreshKb">刷新</button>
+          </div>
+          <div class="stats" id="kbStats">加载中…</div>
+          <div class="chunk-list" id="chunkList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-chat">
+      <div class="chat-layout">
+        <div class="messages" id="messages"></div>
+        <form id="chatForm" class="composer">
+          <label class="inline">
+            <input type="checkbox" id="useRag" checked />
+            启用 RAG
+          </label>
+          <label class="inline grow">
+            会话 ID
+            <input id="sessionId" placeholder="空则自动新建" />
+          </label>
+          <textarea id="message" rows="3" placeholder="输入问题…" required></textarea>
+          <button type="submit" class="btn primary">发送</button>
+        </form>
+      </div>
+    </section>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

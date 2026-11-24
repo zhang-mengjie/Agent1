@@ -1,0 +1,52 @@
+{
+  "mcpServers": {
+    "rag-agent": {
+      "command": "D:\\PJ\\AI\\Agent1\\rag-agent\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "rag_agent.mcp_server"],
+      "cwd": "D:\\PJ\\AI\\Agent1\\rag-agent",
+      "env": {
+        "VIRTUAL_ENV": "",
+        "PYTHONPATH": "D:\\PJ\\AI\\Agent1\\rag-agent\\src",
+        "EMBEDDING_PROVIDER": "local",
+        "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+        "EMBEDDING_DIMS": "512",
+        "HF_ENDPOINT": "https://hf-mirror.com"
+      }
+    },
+    "cs-agent": {
+      "command": "D:\\PJ\\AI\\Agent1\\cs-agent\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "cs_agent.mcp_server"],
+      "cwd": "D:\\PJ\\AI\\Agent1\\cs-agent",
+      "env": {
+        "VIRTUAL_ENV": "",
+        "PYTHONPATH": "D:\\PJ\\AI\\Agent1\\cs-agent\\src",
+        "EMBEDDING_PROVIDER": "local",
+        "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+        "EMBEDDING_DIMS": "512",
+        "HF_ENDPOINT": "https://hf-mirror.com"
+      }
+    },
+    "finance-agent": {
+      "command": "D:\\PJ\\AI\\Agent1\\finance-agent\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "finance_agent.mcp_server"],
+      "cwd": "D:\\PJ\\AI\\Agent1\\finance-agent",
+      "env": {
+        "VIRTUAL_ENV": "",
+        "PYTHONPATH": "D:\\PJ\\AI\\Agent1\\finance-agent\\src",
+        "EMBEDDING_PROVIDER": "local",
+        "EMBEDDING_MODEL": "BAAI/bge-small-zh-v1.5",
+        "EMBEDDING_DIMS": "512",
+        "HF_ENDPOINT": "https://hf-mirror.com"
+      }
+    },
+    "spine-agent": {
+      "command": "D:\\PJ\\AI\\Agent1\\spine-agent\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "spine_agent.mcp_server"],
+      "cwd": "D:\\PJ\\AI\\Agent1\\spine-agent",
+      "env": {
+        "VIRTUAL_ENV": "",
+        "PYTHONPATH": "D:\\PJ\\AI\\Agent1\\spine-agent\\src"
+      }
+    }
+  }
+}

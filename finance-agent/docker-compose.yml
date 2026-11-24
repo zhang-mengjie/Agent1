@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------------------
+# finance-agent 基础设施
+#
+# 【目的】独立库：报销单、制度向量、预算键都与 rag/cs 分开，避免演示串数据。
+# 【易错点】宿主机端口 5434 / 6381；.env 必须与此一致。
+# ---------------------------------------------------------------------------
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: finance-agent-postgres
+    environment:
+      POSTGRES_USER: fin
+      POSTGRES_PASSWORD: fin
+      POSTGRES_DB: finance_agent
+    ports:
+      - "5434:5432"
+    volumes:
+      - finance_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fin -d finance_agent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: finance-agent-redis
+    ports:
+      - "6381:6379"
+    volumes:
+      - finance_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  finance_pg_data:
+  finance_redis_data:

@@ -1,0 +1,26 @@
+# Spine 制作 Agent。贴图、碎图和动画文件都落在本目录 data/，不依赖 Postgres / Redis。
+[project]
+name = "spine-agent"
+version = "0.1.0"
+description = "Spine 制作 Agent：描述生成贴图、按骨骼切碎图、导出 Spine 4.1 并预览"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    "python-dotenv>=1.0.0",
+    "langchain-openai>=0.2.0",
+    "httpx>=0.27.0",
+    "pillow>=11.0.0",
+    "mcp>=2.3.0",
+]
+
+[project.scripts]
+spine-agent = "spine_agent.main:run"
+spine-agent-mcp = "spine_agent.mcp_server:main"
+
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14.0"]
+build-backend = "uv_build"
